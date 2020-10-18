@@ -10,7 +10,7 @@ import torch.nn as nn
 from bucket_iterator import BucketIterator
 from sklearn import metrics
 from data_utils import ABSADatesetReader
-from models import LSTM, ASCNN, ASGCN
+from models import LSTM, ASCNN, ASGCN, SynGCN
 
 class Instructor:
     def __init__(self, opt):
@@ -157,7 +157,8 @@ class Instructor:
 if __name__ == '__main__':
     # Hyper Parameters
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_name', default='lstm', type=str)
+    # parser.add_argument('--model_name', default='asgcn', type=str)
+    parser.add_argument('--model_name', default='syngcn', type=str)
     parser.add_argument('--dataset', default='twitter', type=str, help='twitter, rest14, lap14, rest15, rest16')
     parser.add_argument('--optimizer', default='adam', type=str)
     parser.add_argument('--initializer', default='xavier_uniform_', type=str)
@@ -179,12 +180,14 @@ if __name__ == '__main__':
         'ascnn': ASCNN,
         'asgcn': ASGCN,
         'astcn': ASGCN,
+        'syngcn': SynGCN,
     }
     input_colses = {
         'lstm': ['text_indices'],
         'ascnn': ['text_indices', 'aspect_indices', 'left_indices'],
         'asgcn': ['text_indices', 'aspect_indices', 'left_indices', 'dependency_graph'],
         'astcn': ['text_indices', 'aspect_indices', 'left_indices', 'dependency_graph'],
+        'syngcn': ['text_indices', 'aspect_indices', 'left_indices', 'dependency_graph'],
     }
     initializers = {
         'xavier_uniform_': torch.nn.init.xavier_uniform_,
